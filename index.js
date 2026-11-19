@@ -10,7 +10,10 @@ const title = document.getElementById("newGame")
 const players = document.getElementById("player")
 const news = document.getElementById("new")
 const cop = document.getElementById("cop")
-
+const copy = document.getElementById("copy")
+const copping = document.getElementById("copping")
+const coppin = document.getElementById("coppin")
+ 
 showMiss.addEventListener('change', () => {
     if (showMiss.checked) {
         hunt.textContent = 'Нажмите «Вернуть», если игру принесли обратно.'
@@ -86,6 +89,44 @@ returnButton.addEventListener('click', () => {
     game.cop  = game.cop + 1
     game.borrower.pop()
     message.textContent = 'Игра возвращена'
+    renderGames()
+})
+
+copping.addEventListener('click', () => {
+    const game = games[Number(gameSelect.value)]
+    if (!game) {
+        message.textContent = 'Сначала добавьте игру'
+        return
+    }
+    const addCop = Number(copy.value)
+    if (!Number.isInteger(addCop) || addCop <= 0) {
+        message.textContent = 'Введите количество копий для добавления'
+        return
+    }
+    game.cop += addCop
+    game.initialCop += addCop
+    message.textContent = 'Копии добавлены'
+    renderGames()
+})
+
+coppin.addEventListener('click', () => {
+    const game = games[Number(gameSelect.value)]
+    if (!game) {
+        message.textContent = 'Сначала добавьте игру'
+        return
+    }
+    const addCop = Number(copy.value)
+    if (!Number.isInteger(addCop) || addCop <= 0) {
+        message.textContent = 'Введите количество копий для добавления'
+        return
+    }
+    if (addCop > game.cop) {
+        message.textContent = 'Нельзя убрать больше, чем свободно'
+        return
+    }
+    game.cop -= addCop
+    game.initialCop -= addCop
+    message.textContent = 'Копии добавлены'
     renderGames()
 })
 
